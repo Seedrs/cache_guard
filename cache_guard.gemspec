@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/cache_guard"
   s.license     = "MIT"
 
+  s.add_development_dependency "rails", "~> 4.1.13"
   s.add_development_dependency "rspec", "~> 3.4"
   s.add_development_dependency "rubocop", "~> 0.35.1"
 end
