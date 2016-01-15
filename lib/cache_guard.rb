@@ -6,7 +6,7 @@ class CacheGuard
     @name = name
     @default_value = options[:default_value] || 1
     @expires_in = options[:expires_in] || 120
-    @cache_store = options[:cache_store] || Rails.store
+    @cache_store = options[:cache_store] || Rails.cache
   end
 
   def guard
