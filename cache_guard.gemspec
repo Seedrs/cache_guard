@@ -1,7 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "cache_guard"
-  s.version     = "1.0.0"
-  s.date        = "2016-01-13"
+  s.version     = "1.0.1"
   s.summary     = "Allows you to protect the execution of a block against concurrency."
   s.authors     = ["Duarte Henriques", "Miguel Teixeira"]
   s.email       = ["duarte.henriques@seedrs.com", "miguel.teixeira@seedrs.com"]
@@ -10,6 +9,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://rubygems.org/gems/cache_guard"
   s.license     = "MIT"
 
+  s.add_development_dependency "rails", "~> 4.1.13"
   s.add_development_dependency "rspec", "~> 3.4"
   s.add_development_dependency "rubocop", "~> 0.35.1"
 end

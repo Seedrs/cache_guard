@@ -1,7 +1,21 @@
+require "rails"
 require "spec_helper"
 require "cache_guard"
 
 describe CacheGuard do
+  describe "#initialize" do
+    context "by default" do
+      before do
+        allow(Rails).to receive(:cache)
+      end
+
+      it "uses the Rails cache store" do
+        described_class.new("default")
+        expect(Rails).to have_received(:cache)
+      end
+    end
+  end
+
   describe "#guard" do
     let(:cache_store){ double("Cache", :delete => true) }
     subject{ described_class.new("guard", :cache_store => cache_store) }
