@@ -4,22 +4,22 @@
 
 ## Description
 
-*cache_guard* makes use of your application cache store to ensure that there is no parallel execution of a
-given block of code. You can think of *cache_guard* as a kind of *mutex* without the *wait* functionality.
+*cache_guard* makes use of your application [cache store][cache_stores] to ensure that there is no parallel execution
+of a given block of code. You can think of *cache_guard* as a simple distributed *mutex* that instead of blocking
+raises an error.
 
-The best use case for *cache_guard* is granting synchronous access to a shared resource on asynchronous calls
-allowing one to execute and raising errors on others. For instance, you can use with the [delayed_job gem][delayed_gem]
-to ensure that only one worker is accessing the shared resource and then rely on the provided retries mechanism
-to execute other tasks.
+The best use case for *cache_guard* is granting synchronous access to a shared resource on asynchronous calls.
+For instance, you can use with the [delayed_job gem][delayed_gem] to ensure that only one *worker* is accessing the
+shared resource and then rely on the *delayed_job* retries mechanism to execute the other *workers*.
 
 ## Installation
-*cache_guard* is being used with *ActiveSupport::Cache::Store* 4.1 although it should be compatible with other versions.
-
 This gem is available on RubyGems:
 
+[https://rubygems.org/gems/cache_guard](https://rubygems.org/gems/cache_guard)
+
 ## Usage
-To use simply call the *guard* method passing a string that represents the name of the key that will be put in cache
-to block other guard calls and optionally an hash with options.
+To use simply call the *guard* method passing a string that represents the shared resource and optionally a hash
+with options.
 
 ```ruby
 CacheGuard.guard("resource foo") { my_task_using_shared_resource }
@@ -40,12 +40,25 @@ cache_guard.guard { my_task_using_shared_resource }
 ```
 
 *CacheGuard* raises a *CacheGuard::AcquireError* error on every failed attempt to acquire the guard on a given
- resource name.
+resource name.
 
 ### Supported cache stores
-Any *ActiveSupport::Cache::Store* should be suitable to use, although we recommend that you check
-the documentation and ensure the *increment* operation is atomic. For instance, we're using Memcached, another good
-example would be Redis.
+*CacheGuard* uses the [increment][cache_store_increment] method from *ActiveSupport::Cache::Store* as a way to ensure
+atomic access to the shared resource.
+Since not all cache stores support this operation, we recommend that you test using the following code on your
+rails console:
+
+```ruby
+Rails.cache.increment(SecureRandom.uuid, 1)
+# => 1
+```
+
+We've successfully tested the following cache stores:
+* [Dalli][dalli_store_repository] v2.6.2
+* [Redis][redis_store_repository] v4.0.0
+
+You can also use [FileStore][file_store] on your development environment as long as you keep in mind that every call
+will gain access to the shared resource.
 
 ## Contributing
 
@@ -71,5 +84,10 @@ This gem uses [Semantic Versioning 2.0.0][semantic_versioning], which means:
 
 > Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
 
+[cache_stores]: http://guides.rubyonrails.org/caching_with_rails.html#cache-stores
+[cache_store_increment]: http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html#method-i-increment
 [delayed_gem]: https://github.com/collectiveidea/delayed_job
+[dalli_store_repository]: https://github.com/petergoldstein/dalli
+[redis_store_repository]: https://github.com/redis-store/redis-rails
+[file_store]: http://api.rubyonrails.org/classes/ActiveSupport/Cache/FileStore.html
 [semantic_versioning]: http://semver.org/
