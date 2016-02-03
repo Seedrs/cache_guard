@@ -29,9 +29,8 @@ class CacheGuard
     # The FileStore increment operation returns nil if the cache key doesn't exist. Since the FileStore strategy
     # should be only used in development environment we can allow all guards to pass.
     # http://api.rubyonrails.org/classes/ActiveSupport/Cache/FileStore.html#method-i-increment
-    # http://www.rubydoc.info/github/mperham/dalli/ActiveSupport/Cache/DalliStore#increment-instance_method
     value = @cache_store.increment(@name, @default_value, :expires_in => @expires_in)
-    value.nil? || value == @default_value ? true : false
+    value.nil? || value == @default_value
   end
 
   def release
