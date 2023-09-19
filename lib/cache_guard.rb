@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CacheGuard
   class AcquireError < RuntimeError
   end
