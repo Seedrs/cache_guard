@@ -35,7 +35,7 @@ from *Rails.cache*.
 *CacheGuard* can also be instantiated and used as follows.
 
 ```ruby
-cache_guard = CacheGuard.new("resource bar", :expires_in => 180)
+cache_guard = CacheGuard.new("resource bar", { :expires_in => 180 })
 cache_guard.guard { my_task_using_shared_resource }
 ```
 
