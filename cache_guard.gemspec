@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "cache_guard"
-  s.version     = "1.0.2"
+  s.version     = "2.0.0"
   s.summary     = "Allows you to protect the execution of a block against concurrency."
   s.authors     = ["Duarte Henriques", "Miguel Teixeira"]
   s.email       = ["duarte.henriques@seedrs.com", "miguel.teixeira@seedrs.com"]
