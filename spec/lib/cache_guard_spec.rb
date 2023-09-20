@@ -61,7 +61,7 @@ describe CacheGuard do
 
     before do
       allow(subject).to receive(:guard).and_yield
-      allow(described_class).to receive(:new).with("static", :expires_in => 100).and_return(subject)
+      allow(described_class).to receive(:new).with("static", { :expires_in => 100 }).and_return(subject)
     end
 
     it "creates a new instance and calls guard with the given block" do
